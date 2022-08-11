@@ -1,0 +1,33 @@
+https://leetcode.com/problems/car-fleet/
+
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+       PriorityQueue<Car> pq = new PriorityQueue<>();
+        for(int i=0;i<position.length;i++){
+            pq.add(new Car(position[i],speed[i]));
+        }
+        double time = 0;
+        int groups = 0;
+        while(pq.size() > 0){
+            Car car = pq.remove();
+            double ctime = (target - car.pos) * 1.0 / car.speed;
+            if(ctime > time){
+               time = ctime;
+                groups++;
+            }
+        }
+        return groups;
+    }
+   static class Car implements Comparable<Car>{
+       int pos;
+       int speed;
+       
+       Car(int pos,int speed){
+           this.pos = pos;
+           this.speed = speed;
+       }
+        public int compareTo(Car o){
+            return o.pos - this.pos;
+        }
+   }
+}
