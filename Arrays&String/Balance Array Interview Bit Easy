@@ -1,0 +1,40 @@
+https://www.interviewbit.com/problems/balance-array/
+
+public class Solution {
+    public int solve(ArrayList<Integer> A) {
+        int res =  0;
+        int odd = 0;
+        int even = 0;
+        int leftE = 0;
+        int leftO = 0;
+      for(int i=0;i<A.size();i++){
+       if(i % 2 == 0){
+           even += A.get(i);
+       }else{
+           odd += A.get(i);
+       } 
+      }
+      for(int i=0;i<A.size();i++){
+          int rightE = 0,rightO = 0;
+          if(i % 2 == 0){
+             rightE = even - A.get(i) - leftE;
+             rightO = odd - leftO;
+          }else{
+             rightE = even - leftE;
+             rightO = odd - A.get(i) - leftO;
+          }
+          int newOdd = leftO + rightE;
+          int newEven = leftE + rightO;
+          if(newOdd == newEven){
+              res++;
+          }
+          if(i % 2 == 0){
+             leftE += A.get(i);
+          }else{
+             leftO += A.get(i);
+          }
+          
+      }
+      return res;
+    }
+}
