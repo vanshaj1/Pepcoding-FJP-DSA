@@ -1,0 +1,116 @@
+https://leetcode.com/problems/range-sum-query-mutable/
+
+307. Range Sum Query - Mutable
+Medium
+Given an integer array nums, handle multiple queries of the following types:
+
+Update the value of an element in nums.
+Calculate the sum of the elements of nums between indices left and right inclusive where left <= right.
+Implement the NumArray class:
+
+NumArray(int[] nums) Initializes the object with the integer array nums.
+void update(int index, int val) Updates the value of nums[index] to be val.
+int sumRange(int left, int right) Returns the sum of the elements of nums between indices left and right inclusive (i.e. nums[left] + nums[left + 1] + ... + nums[right]).
+ 
+
+Example 1:
+
+Input
+["NumArray", "sumRange", "update", "sumRange"]
+[[[1, 3, 5]], [0, 2], [1, 2], [0, 2]]
+Output
+[null, 9, null, 8]
+
+Explanation
+NumArray numArray = new NumArray([1, 3, 5]);
+numArray.sumRange(0, 2); // return 1 + 3 + 5 = 9
+numArray.update(1, 2);   // nums = [1, 2, 5]
+numArray.sumRange(0, 2); // return 1 + 2 + 5 = 8
+ 
+
+Constraints:
+
+1 <= nums.length <= 3 * 104
+-100 <= nums[i] <= 100
+0 <= index < nums.length
+-100 <= val <= 100
+0 <= left <= right < nums.length
+At most 3 * 104 calls will be made to update and sumRange.
+
+
+ ```````````````````````````````````Code`````````````````````````````
+
+// **************************************Segment  Tree *********************************\\
+class NumArray {
+    static class Node{
+        int start;
+        int end;
+        int val;
+        
+        Node left;
+        Node right;
+    }
+    Node root;
+    public NumArray(int[] nums) {
+        root = construct(nums,0,nums.length-1);
+    }
+    Node construct(int[] nums,int lo,int hi){
+        if(lo == hi){
+            Node node = new Node();
+            node.start = node.end = lo;
+            node.left = null;
+            node.right = null;
+            node.val = nums[lo];
+            return node;
+        }
+        Node node = new Node();
+        node.start = lo;
+        node.end = hi;
+        int mid = (lo + hi)/2;
+        node.left = construct(nums,lo,mid);
+        node.right = construct(nums,mid+1,hi);
+        
+        node.val = node.left.val + node.right.val;
+        
+        return node;
+    }
+    void updateHelper(Node node,int index,int val){
+        if(node.start == node.end){
+            node.val = val;
+            return;
+        }
+        int mid = (node.start + node.end)/2;
+        if(index <= mid){
+            updateHelper(node.left,index,val);
+        }else{
+            updateHelper(node.right,index,val);
+        }
+         node.val = node.left.val + node.right.val;
+    }
+    public void update(int index, int val) {
+        updateHelper(root,index,val);
+    }
+    
+    int query(Node root,int qs,int qe){
+        if(qs > root.end || qe < root.start){
+            return 0;
+        }else if(root.start >= qs && root.end <= qe){
+            return root.val;
+        }else{
+            int lval = query(root.left,qs,qe);
+            int rval = query(root.right,qs,qe);
+            return lval + rval;
+        }
+    }
+    
+    public int sumRange(int left, int right) {
+        return query(root,left,right);
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
