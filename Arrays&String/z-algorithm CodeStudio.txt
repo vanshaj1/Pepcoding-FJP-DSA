@@ -1,0 +1,41 @@
+public class Solution {
+
+	public static int zAlgorithm(String s, String p, int n, int m) {
+		// Write your code here
+        String str = p + '$' + s;
+        int[] z = new int[str.length()];
+        int r = 0,l = 0;
+        z[0] = 0;
+        for(int i=1;i<str.length();i++){
+            if(r < i){
+                 r = l = i;
+                while(r < str.length() && str.charAt(r) == str.charAt(r - l)){
+                    r++;
+                }
+                r--;
+                z[i] = r - l + 1; 
+            }else{
+                int k = i - l;
+               if(z[k] < r - i + 1){
+                    z[i] = z[k];
+                }else{
+                    l = i;
+                    while(r < str.length() && str.charAt(r) == str.charAt(r - l)){
+                        r++;
+                    }
+                    r--;
+                    z[i] = r - l + 1; 
+                } 
+            }
+        }
+        int count = 0;
+        for(int zval:z){
+            if(zval == p.length()){
+                count++;
+            }
+        }
+        return count;
+
+	}
+
+}
