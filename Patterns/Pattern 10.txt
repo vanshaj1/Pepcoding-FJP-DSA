@@ -1,0 +1,111 @@
+Pattern 10
+Easy
+
+1. You are given a number n.
+2. You've to create a pattern of * and separated by tab as shown in output format.
+
+Constraints
+1 <= n <= 100
+ Also, n is odd.
+
+Format
+Input
+A number n
+
+Output
+pat101
+
+Example
+Sample Input
+
+5
+
+Sample Output
+		*	
+	*		*	
+*				*	
+	*		*	
+		*	
+
+``````````````````````````````Code``````````````````````````````````
+Approach 1
+
+
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) {
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int inc = -1;
+    for(int i=1;i<=((n/2)+1);i++){
+        for(int j=1;j<=(((n/2)+1)-i);j++){
+            System.out.print("\t");
+        }
+        System.out.print("*\t");
+        for(int j=1;j<=inc;j++){
+            System.out.print("\t");
+        }
+        if(inc != -1){
+            System.out.print("*\t");      
+        }
+        inc+=2;
+        System.out.println();
+      
+    }
+    int dec = n-4;
+    for(int i=1;i<= (n/2);i++){
+        for(int j=1;j<=i;j++){
+            System.out.print("\t");
+        }
+        System.out.print("*\t");
+        for(int j=1;j<=dec;j++){
+            System.out.print("\t");
+        }
+        if(dec != -1){
+            System.out.print("*\t");
+        }
+        dec-=2;
+        System.out.println();
+    }
+ }
+}
+
+Approach 2
+
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) {
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int os = n/2;
+    int is = -1;
+    for(int i =1;i<=n;i++){
+        for(int j=1;j<=os;j++){
+            System.out.print("\t");
+        }
+        if (is == -1){
+            System.out.print("*");
+        }else{
+            System.out.print("*\t");
+           for(int j =1;j<=is;j++){
+               
+               System.out.print("\t");
+            } 
+            System.out.print("*\t");
+        } 
+        if(i <= (n/2)){
+            os--;
+            is+=2;
+        }else{
+            os++;
+            is-=2;
+        }
+        System.out.println();
+    }
+
+  }
+}

@@ -1,0 +1,121 @@
+Pattern 20
+Easy
+
+1. You are given a number n.
+2. You've to write code to print the pattern given in output format below.
+
+Constraints
+1 <= n <= 10
+ Also, n is odd.
+
+Format
+Input
+A number n
+
+Output
+pat201
+
+Example
+Sample Input
+
+5
+
+Sample Output
+*				*	
+*				*	
+*		*		*	
+*	*		*	*	
+*				*
+
+
+```````````````````````````````Code`````````````````````````````````
+Approach 1
+
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        for(int i=1;i<=(n/2);i++){
+            System.out.print("*\t");
+            for(int j=1;j<=n-2;j++){
+               System.out.print("\t");
+            }
+            System.out.print("*\t");
+            System.out.println();
+        }
+        for(int i=(n/2)+1;i>=1;i--){
+           System.out.print("*\t");
+           for(int j=1;j<=i-2;j++){
+               System.out.print("\t");
+           }
+           if(i != 1){
+               System.out.print("*\t");
+           }
+           for(int j=1;j<= n-(2*i);j++){
+               System.out.print("\t");
+           }
+           if(i != (n/2)+1){
+               System.out.print("*\t");
+           }
+           
+           for(int j=1;j<=i-2;j++){
+               System.out.print("\t");
+           }
+           if(i != 1){
+               System.out.print("*\t");
+           }
+            System.out.println();
+        }
+
+    }
+}
+
+Approach 2
+
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        for(int i=1;i<=n/2;i++){
+            System.out.print("*\t");
+           for(int j=1;j<=n-2;j++){
+               System.out.print("\t");
+           }
+           System.out.print("*\t");
+           System.out.println();
+        } 
+        int inc = -1;
+        int dec = (n/2)-1;
+        for(int i=1;i<=(n/2)+1;i++){
+           if(i != (n/2)+1 ){
+            System.out.print("*\t");   
+           }
+           for(int j=1;j<=dec;j++){
+               System.out.print("\t");
+           }
+           System.out.print("*\t");
+           for(int j=1;j<=inc;j++){
+               System.out.print("\t");
+           }
+           if(i != 1){
+               System.out.print("*\t");
+           }
+           for(int j=1;j<=dec;j++){
+               System.out.print("\t");
+           }
+           if(i != (n/2)+1 ){
+            System.out.print("*\t");   
+           }
+           inc+=2;
+           dec--;
+           System.out.println();
+
+        }
+    }
+}
