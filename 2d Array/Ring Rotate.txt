@@ -1,0 +1,244 @@
+Ring Rotate
+Easy
+
+You are given a n*m matrix where n are the number of rows and m are the number of columns. You are also given n*m numbers representing the elements of the matrix.
+You will be given a ring number 's' representing the ring of the matrix. For details, refer to image.
+
+shell-rotate
+
+You will be given a number 'r' representing number of rotations in an anti-clockwise manner of the specified ring.
+You are required to rotate the 's'th ring by 'r' rotations and display the rotated matrix.
+
+Constraints
+1 <= n <= 10^2
+1 <= m <= 10^2
+-10^9 <= e11, e12, .. n * m elements <= 10^9
+0 < s <= min(n, m) / 2
+-10^9 <= r <= 10^9
+
+Format
+Input
+A number n
+A number m
+e11
+e12..
+e21
+e22..
+.. n * m number of elements of array a
+A number s
+A number r
+
+Output
+output is handled by display function
+
+Example
+Sample Input
+
+5
+7
+11
+12
+13
+14
+15
+16
+17
+21
+22
+23
+24
+25
+26
+27
+31
+32
+33
+34
+35
+36
+37
+41
+42
+43
+44
+45
+46
+47
+51
+52
+53
+54
+55
+56
+57
+2
+3
+
+Sample Output
+11 12 13 14 15 16 17
+21 25 26 36 46 45 27
+31 24 33 34 35 44 37
+41 23 22 32 42 43 47
+51 52 53 54 55 56 57
+
+
+
+
+
+
+````````````````````````````````Code``````````````````````````````````
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+      Scanner scn = new Scanner(System.in);
+      int n = scn.nextInt();
+      int m = scn.nextInt();
+      int[][] arr = new int[n][m];
+      for(int i=0;i<n;i++){
+          for(int j=0;j<m;j++){
+            arr[i][j] = scn.nextInt();
+          }
+      }
+      int s = scn.nextInt();
+      int r = scn.nextInt();
+      ringRotate(arr , s , r);
+       for(int i=0;i<n;i++){
+          for(int j=0;j<m;j++){
+            System.out.print(arr[i][j] + " ");
+          }
+          System.out.println();
+      }
+
+
+    }
+    public static void ringRotate(int[][] arr , int s , int r){
+        int[] ringArray = TakeRingOutOf2DArray(arr , s);
+        rotate(ringArray , r);
+        fillRotatedArrayBack(arr , ringArray , s);
+    }
+    public static void rotate(int[] ringArray , int r){
+        
+            r = r % ringArray.length;
+            if(r < 0){
+                r = ringArray.length + r;
+            }
+           
+                
+                reverse(0 , ringArray.length-r-1 , ringArray);
+                reverse(ringArray.length-r , ringArray.length-1  , ringArray);
+                reverse(0 , ringArray.length-1 , ringArray);
+                
+            
+            
+    }
+    public static void reverse( int start , int end , int[] arr){
+        while(start <= end){
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
+        }
+    }
+    public static int[] TakeRingOutOf2DArray(int[][] arr , int s ){
+      int startRow = s - 1;
+      int startCol = s - 1;
+      int endRow = arr.length - s;
+      int endCol = arr[0].length - s; 
+      int OneDLength =  (2 * (endRow  + endCol  -  2* (startRow))); 
+      int[] OneD = new int[OneDLength];
+      int count = 1;
+      int j=0;
+      
+        
+        for(int i=startRow;i<= endRow; i++){
+           
+           OneD[j] = arr[i][startCol];
+           j++;
+           
+        }
+        
+        startCol++;
+         for(int i=startCol;i<= endCol; i++){
+           
+           OneD[j] = arr[endRow][i];
+           j++;
+           
+
+         }
+         
+         endRow--;
+         for(int i=endRow;i>=startRow ; i--){
+           
+           OneD[j] = arr[i][endCol];
+           j++;
+          
+        }
+        
+        endCol--;
+         for(int i=endCol;i>= startCol; i--){
+           
+           OneD[j] = arr[startRow][i];
+           j++;
+           
+
+         }
+        
+
+
+       
+       return OneD;
+    }
+    public static void fillRotatedArrayBack(int[][] arr , int[] OneD , int s ){
+      int startRow = s - 1;
+      int startCol = s - 1;
+      int endRow = arr.length - s;
+      int endCol = arr[0].length - s; 
+      int j=0;
+      
+        
+        for(int i=startRow;i<= endRow; i++){
+           
+           arr[i][startCol] = OneD[j];
+           j++;
+           
+        }
+        
+        startCol++;
+         for(int i=startCol;i<= endCol; i++){
+           
+           arr[endRow][i]  = OneD[j];
+           j++;
+           
+
+         }
+         
+         endRow--;
+         for(int i=endRow;i>=startRow ; i--){
+           
+           arr[i][endCol] = OneD[j];
+           j++;
+          
+        }
+        
+        endCol--;
+         for(int i=endCol;i>= startCol; i--){
+           
+           arr[startRow][i] = OneD[j];
+           j++;
+           
+
+         }
+        
+
+
+       
+    }
+   
+   
+}

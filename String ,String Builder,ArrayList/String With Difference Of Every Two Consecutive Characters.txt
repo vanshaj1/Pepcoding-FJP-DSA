@@ -1,0 +1,61 @@
+String With Difference Of Every Two Consecutive Characters
+Easy
+
+1. You are given a string that contains only lowercase and uppercase alphabets. 
+2. You have to form a string that contains the difference of ASCII values of every two consecutive characters between those characters.
+   For "abecd", the answer should be "a1b3e-2c1d", as 
+   'b'-'a' = 1
+   'e'-'b' = 3
+   'c'-'e' = -2
+   'd'-'c' = 1
+
+Constraints
+1 <= length of string <= 1000
+
+Format
+Input
+A String
+
+Output
+A String
+
+Example
+Sample Input
+
+pepCODinG
+
+Sample Output
+p-11e11p-45C12O-11D37i5n-39G
+
+
+
+
+
+
+
+````````````````````````````````Code```````````````````````````````````
+
+ import java.io.*;
+import java.util.*;
+
+public class Main {
+
+	public static String solution(String str){
+		StringBuilder res = new StringBuilder("");
+
+        for(int i=0;i<str.length()-1;i++){
+            res.append(str.charAt(i));
+            res.append(str.charAt(i+1) - str.charAt(i));
+            
+            
+        }
+        res.append(str.charAt(str.length()-1));
+		return res.toString();
+	}
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		String str = scn.next();
+		System.out.println(solution(str));
+	}
+
+}
