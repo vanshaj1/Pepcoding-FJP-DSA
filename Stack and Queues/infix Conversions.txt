@@ -1,0 +1,107 @@
+Infix Conversions
+Easy
+
+1. You are given an infix expression.
+2. You are required to convert it to postfix and print it.
+3. You are required to convert it to prefix and print it.
+
+Constraints
+1. Expression is balanced
+2. The only operators used are +, -, *, /
+3. Opening and closing brackets - () - are used to impact precedence of operations
+4. + and - have equal precedence which is less than * and /. * and / also have equal precedence.
+5. In two operators of equal precedence give preference to the one on left.
+6. All operands are single digit numbers.
+
+Format
+Input
+Input is managed for you
+
+Output
+postfix
+prefix
+
+Example
+Sample Input
+
+a*(b-c+d)/e
+
+Sample Output
+abc-d+*e/
+/*a+-bcde
+
+
+
+```````````````````````````````Code```````````````````````````
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+public static int precedence(char ch){
+    if(ch == '*' || ch == '/'){
+        return 2;
+    }else if(ch == '+' || ch == '-'){
+        return 1;
+    }
+    return 0;
+}
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    Stack<Character> operator = new Stack<>();
+    Stack<String> prefix = new Stack<>();
+    Stack<String> postfix = new Stack<>();
+
+    for(int i=0;i<exp.length();i++){
+       char ch = exp.charAt(i);
+       if(ch >= 'a' && ch <= 'z'){
+           prefix.push(ch + "");
+           postfix.push(ch + "");
+       }else if(ch == '('){
+          operator.push(ch);
+       }else if(ch == ')'){
+           while(operator.peek() != '('){
+               String b = prefix.pop();
+               String a = prefix.pop();
+               char op = operator.pop();
+               prefix.push(op+a+b);
+               b = postfix.pop();
+               a = postfix.pop();
+               postfix.push(a+b+op);
+           }
+           operator.pop();
+       }else if(ch == '+' || ch == '-' || ch == '/' || ch == '*'){
+          while(operator.size() > 0 && operator.peek() != '(' && precedence(operator.peek()) >= precedence(ch)){
+                String b = prefix.pop();
+               String a = prefix.pop();
+               char op = operator.pop();
+               prefix.push(op+a+b);
+               b = postfix.pop();
+               a = postfix.pop();
+               postfix.push(a+b+op);
+          }
+          operator.push(ch);
+       }
+
+       
+
+    }
+     while(operator.size() > 0){
+               String b = prefix.pop();
+               String a = prefix.pop();
+               char op = operator.pop();
+               prefix.push(op+a+b);
+               b = postfix.pop();
+               a = postfix.pop();
+               postfix.push(a+b+op);
+     }
+    System.out.println(postfix.peek());
+            
+    System.out.println(prefix.peek());
+    
+ }
+}

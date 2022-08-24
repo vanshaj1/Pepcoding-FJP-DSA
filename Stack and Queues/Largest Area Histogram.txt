@@ -1,0 +1,111 @@
+Largest Area Histogram
+Hard
+
+1. You are given a number n, representing the size of array a. 2. You are given n numbers, representing the height of bars in a bar chart. 3. You are required to find and print the area of largest rectangle in the histogram. e.g. for the array [6 2 5 4 5 1 6] -> 12
+
+
+Constraints
+0 <= n < 20 0 <= a[i] <= 10
+
+
+Format
+Input
+Input is managed for you
+
+
+Output
+A number representing area of largest rectangle in histogram
+
+
+Example
+Sample Input
+
+7
+6
+2
+5
+4
+5
+1
+6
+
+Sample Output
+12
+
+
+
+`````````````````````````````````Code```````````````````````````
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+// finding next greater towards left
+public static int[] ngel(int[] arr){
+   Stack<Integer> stk = new Stack<>();
+   int[] res = new int[arr.length];
+    Arrays.fill(res , -1);
+   for(int i=0;i<arr.length;i++){
+      while(stk.size() > 0 && arr[i] <= arr[stk.peek()]){
+          stk.pop();
+      }
+      if(stk.size() > 0){
+        res[i] = stk.peek();
+      }
+      stk.push(i);
+   }  
+   return res;   
+}
+
+// finding next greater towards right
+public static int[] nger(int[] arr){
+   Stack<Integer> stk = new Stack<>();
+   int[] res = new int[arr.length];
+   Arrays.fill(res , arr.length);
+   for(int i=arr.length-1;i>=0;i--){
+      while(stk.size() > 0 && arr[i] <= arr[stk.peek()]){
+          stk.pop();
+      }
+      if(stk.size() > 0){
+        res[i] = stk.peek();
+      }
+      stk.push(i);
+   }  
+   return res;   
+}
+
+// finding Area of coverage
+public static int[] Areas(int[] arr){
+   int[] ngetol = ngel(arr);
+   int[] ngetor = nger(arr);
+   int[] res = new int[arr.length];
+   for(int i=0;i<res.length;i++){
+       res[i] = (ngetor[i] - ngetol[i] - 1) * arr[i];
+   }  
+   return res;   
+}
+
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    int n = Integer.parseInt(br.readLine());
+    int[] a = new int[n];
+    for(int i = 0; i < n; i++){
+       a[i] = Integer.parseInt(br.readLine());
+    }
+    
+    int[] arr = Areas(a);
+
+    // finding minimum area
+    int max = Integer.MIN_VALUE;
+    for(int i=0;i<arr.length;i++){
+       if(max < arr[i]){
+         max = arr[i];
+       }
+    }
+    System.out.println(max);
+      
+  }
+}

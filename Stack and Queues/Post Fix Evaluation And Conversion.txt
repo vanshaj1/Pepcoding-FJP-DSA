@@ -1,0 +1,90 @@
+Postfix Evaluation And Conversions
+Easy
+
+1. You are given a postfix expression.
+2. You are required to evaluate it and print it's value.
+3. You are required to convert it to infix and print it.
+4. You are required to convert it to prefix and print it.
+
+Note -> Use brackets in infix expression for indicating precedence. Check sample input output for more details.
+
+Constraints
+1. Expression is a valid postfix expression
+2. The only operators used are +, -, *, /
+3. All operands are single digit numbers.
+
+Format
+Input
+Input is managed for you
+
+Output
+value, a number
+infix
+prefix
+
+Example
+Sample Input
+
+264*8/+3-
+
+Sample Output
+2
+((2+((6*4)/8))-3)
+-+2/*6483
+
+
+
+```````````````````````````Code``````````````````````````````
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    Stack<Integer> evalution = new Stack<>();
+    Stack<String> infix = new Stack<>();
+    Stack<String> prefix = new Stack<>();
+    
+    for(int i=0;i<exp.length();i++){
+      char ch = exp.charAt(i);
+      
+      if(ch >= '0' && ch <= '9'){
+          evalution.push(ch - '0');
+          infix.push(ch + "");
+          prefix.push(ch + "");
+      }if(ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+          int b = evalution.pop();
+          int a = evalution.pop();
+          int ans = 0;
+          if(ch == '+'){
+            ans = a + b;
+          }else if(ch == '-'){
+            ans = a - b;
+          }else if(ch == '/'){
+            ans = a / b;
+          }else if(ch == '*'){
+            ans = a * b;
+          }
+          evalution.push(ans);
+          String infixb = infix.pop();
+          String infixa = infix.pop();
+          String infixConv = '('+ infixa +  ch + infixb  +')';
+          infix.push(infixConv);
+          String prefixb = prefix.pop();
+          String prefixa = prefix.pop();
+          String prefixConv =  ch + prefixa + prefixb;
+          prefix.push(prefixConv);
+      }
+    }
+    System.out.println(evalution.peek());
+    System.out.println(infix.peek());
+    System.out.println(prefix.peek());
+ 
+ }
+}
