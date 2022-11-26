@@ -1,0 +1,184 @@
+Get Connected Components Of A Graph
+Easy
+
+1. You are given a graph. 2. You are required to find and print all connected components of the graph.
+
+
+Constraints
+None
+
+Format
+Input
+Input has been managed for you
+
+Output
+Check the sample output
+
+Example
+Sample Input
+
+7
+5
+0 1 10
+2 3 10
+4 5 10
+5 6 10
+4 6 10
+
+Sample Output
+[[0, 1], [2, 3], [4, 5, 6]]
+
+
+```````````````````````````````Code``````````````````````````
+Approach 1
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+   static class Edge {
+      int src;
+      int nbr;
+      int wt;
+
+      Edge(int src, int nbr, int wt) {
+         this.src = src;
+         this.nbr = nbr;
+         this.wt = wt;
+      }
+   }
+   public static void findComponents(int src,ArrayList<Integer> comp,boolean[] visited,ArrayList<Edge>[] graph){
+      visited[src] = true;
+      comp.add(src);
+      for(Edge edge: graph[src]){
+         if(visited[edge.nbr] != true){
+            findComponents(edge.nbr,comp,visited,graph);
+         }
+      }
+
+   }
+
+   public static void main(String[] args) throws Exception {
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+      int vtces = Integer.parseInt(br.readLine());
+      ArrayList<Edge>[] graph = new ArrayList[vtces];
+      for (int i = 0; i < vtces; i++) {
+         graph[i] = new ArrayList<>();
+      }
+
+      int edges = Integer.parseInt(br.readLine());
+      for (int i = 0; i < edges; i++) {
+         String[] parts = br.readLine().split(" ");
+         int v1 = Integer.parseInt(parts[0]);
+         int v2 = Integer.parseInt(parts[1]);
+         int wt = Integer.parseInt(parts[2]);
+         graph[v1].add(new Edge(v1, v2, wt));
+         graph[v2].add(new Edge(v2, v1, wt));
+      }
+
+      ArrayList<ArrayList<Integer>> comps = new ArrayList<>();
+      
+      // write your code here
+      boolean[] visited = new boolean[vtces];
+      int i = 0;
+      int rem = vtces;
+      while(i < rem){
+         if(visited[i] == false){
+             ArrayList<Integer> comp = new ArrayList();
+             findComponents(i,comp,visited,graph);
+             comps.add(comp);
+         }
+         i++;
+      }
+      System.out.println(comps);
+   }
+}
+
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+   static class Edge {
+      int src;
+      int nbr;
+      int wt;
+
+      Edge(int src, int nbr, int wt) {
+         this.src = src;
+         this.nbr = nbr;
+         this.wt = wt;
+      }
+   }
+   // public static void findComponents(int src,ArrayList<Integer> comp,boolean[] visited,ArrayList<Edge>[] graph){
+   //    visited[src] = true;
+   //    comp.add(src);
+   //    for(Edge edge: graph[src]){
+   //       if(visited[edge.nbr] != true){
+   //          findComponents(edge.nbr,comp,visited,graph);
+   //       }
+   //    }
+
+   // }
+   public static  void getConnected(int src,ArrayList<Edge>[] graph,ArrayList<Integer> comp,boolean[] vis){
+      vis[src] = true;
+      comp.add(src);
+      for(Edge edge: graph[src]){
+         if(vis[edge.nbr] != true)
+             getConnected(edge.nbr,graph,comp,vis);
+      }
+   }
+
+   public static void main(String[] args) throws Exception {
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+      int vtces = Integer.parseInt(br.readLine());
+      ArrayList<Edge>[] graph = new ArrayList[vtces];
+      for (int i = 0; i < vtces; i++) {
+         graph[i] = new ArrayList<>();
+      }
+
+      int edges = Integer.parseInt(br.readLine());
+      for (int i = 0; i < edges; i++) {
+         String[] parts = br.readLine().split(" ");
+         int v1 = Integer.parseInt(parts[0]);
+         int v2 = Integer.parseInt(parts[1]);
+         int wt = Integer.parseInt(parts[2]);
+         graph[v1].add(new Edge(v1, v2, wt));
+         graph[v2].add(new Edge(v2, v1, wt));
+      }
+
+      ArrayList<ArrayList<Integer>> comps = new ArrayList<>();
+      
+      // write your code here
+      // boolean[] visited = new boolean[vtces];
+      // int i = 0;
+      // int rem = vtces;
+      // while(i < rem){
+      //    if(visited[i] == false){
+      //        ArrayList<Integer> comp = new ArrayList();
+      //        findComponents(i,comp,visited,graph);
+      //        comps.add(comp);
+      //    }
+      //    i++;
+      // }
+      // System.out.println(comps);
+      boolean[] vis = new boolean[vtces];
+      for(int i=0;i<vtces;i++){
+         if(vis[i] != true){
+            ArrayList<Integer> comp = new ArrayList<Integer>();
+            getConnected(i,graph,comp,vis);
+            comps.add(comp);
+         }
+      }
+      System.out.println(comps);
+   }
+}
+

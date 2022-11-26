@@ -1,0 +1,331 @@
+Min Cost In Maze Traversal
+Easy
+
+1. You are given a number n, representing the number of rows.
+2. You are given a number m, representing the number of columns.
+3. You are given nm numbers, representing elements of 2d array a, which represents a maze.
+4. You are standing in top-left cell and are required to move to bottom-right cell.
+5. You are allowed to move 1 cell right (h move) or 1 cell down (v move) in 1 motion.
+6. Each cell has a value that will have to be paid to enter that cell (even for the top-left and bottom- 
+     right cell).
+7. You are required to traverse through the matrix and print the cost of path which is least costly.
+
+Constraints
+1 = n = 10^2
+1 = m = 10^2
+0 = e1, e2, .. n  m elements = 1000
+
+Format
+Input
+A number n
+A number m
+e11
+e12..
+e21
+e22..
+.. n  m number of elements
+
+Output
+The cost of least costly path.
+
+Example
+Sample Input
+
+6
+6
+0 1 4 2 8 2
+4 3 6 5 0 4
+1 2 4 1 4 6
+2 0 7 3 2 2
+3 1 5 9 2 4
+2 7 0 8 5 1
+
+Sample Output
+23
+
+
+
+
+
+`````````````````````````````````Code````````````````````````````````
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    // public static int minCostInMaze(int row,int col,int[][] cost,int maxRow,int MaxCol){
+    //     if(row == maxRow && col == MaxCol){
+    //         return cost[row][col];
+    //     }
+    //     int minCost = Integer.MAX_VALUE;
+    //     if(col + 1 <= MaxCol){
+    //         minCost = Math.min(minCost,minCostInMaze(row,col+1,cost,maxRow,MaxCol));
+    //     }
+    //     if(row + 1 <= maxRow){
+    //         minCost = Math.min(minCost,minCostInMaze(row+1,col,cost,maxRow,MaxCol));
+    //     }
+        
+    //     return minCost + cost[row][col];
+    // }
+    public static int minCostInMazeByMemo(int row,int col,int[][] cost,int maxRow,int MaxCol,int[][] dp){
+        if(row == maxRow && col == MaxCol){
+            return dp[row][col] = cost[row][col];
+        }
+        if(dp[row][col] != Integer.MAX_VALUE){
+            return dp[row][col];
+        }
+        int minCost = Integer.MAX_VALUE;
+        if(col + 1 <= MaxCol){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row,col+1,cost,maxRow,MaxCol,dp));
+        }
+        if(row + 1 <= maxRow){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row+1,col,cost,maxRow,MaxCol,dp));
+        }
+        
+        return dp[row][col] = minCost + cost[row][col];
+    }
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+        int[][] cost = new int[n][m];
+        for(int i=0;i<cost.length;i++){
+            for(int j=0;j<cost[i].length;j++){
+                cost[i][j] = scn.nextInt();
+            }
+        }
+        int[][] dp = new int[n][m];
+        for(int i=0;i<dp.length;i++){
+            Arrays.fill(dp[i],Integer.MAX_VALUE);
+        }
+        
+        int minimumCost = minCostInMazeByMemo(0,0,cost,n-1,m-1,dp);
+        System.out.println(minimumCost);
+    }
+
+}
+
+
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    // public static int minCostInMaze(int row,int col,int[][] cost,int maxRow,int MaxCol){
+    //     if(row == maxRow && col == MaxCol){
+    //         return cost[row][col];
+    //     }
+    //     int minCost = Integer.MAX_VALUE;
+    //     if(col + 1 <= MaxCol){
+    //         minCost = Math.min(minCost,minCostInMaze(row,col+1,cost,maxRow,MaxCol));
+    //     }
+    //     if(row + 1 <= maxRow){
+    //         minCost = Math.min(minCost,minCostInMaze(row+1,col,cost,maxRow,MaxCol));
+    //     }
+        
+    //     return minCost + cost[row][col];
+    // }
+    public static int minCostInMazeByMemo(int row,int col,int[][] cost,int maxRow,int MaxCol,int[][] dp){
+        if(row == maxRow && col == MaxCol){
+            return dp[row][col] = cost[row][col];
+        }
+        if(dp[row][col] != Integer.MAX_VALUE){
+            return dp[row][col];
+        }
+        int minCost = Integer.MAX_VALUE;
+        if(col + 1 <= MaxCol){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row,col+1,cost,maxRow,MaxCol,dp));
+        }
+        if(row + 1 <= maxRow){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row+1,col,cost,maxRow,MaxCol,dp));
+        }
+        
+        return dp[row][col] = minCost + cost[row][col];
+    }
+    public static int rec(int row,int col ,int n,int m,int[][] cost){
+        if(row == n-1 &&  col == m-1){
+            return cost[row][col];
+        }
+        int ans = 0,v = Integer.MAX_VALUE,h = Integer.MAX_VALUE;
+        if(row+1 < n){
+            v = rec(row+1,col,n,m,cost);
+        }
+        if(col+1 < m){
+            h = rec(row,col+1,n,m,cost);
+        }
+        ans += Math.min(v,h);
+        return cost[row][col] + ans;
+    } 
+    public static int memo(int row,int col ,int n,int m,int[][] cost,int[][] dp){
+        if(row == n-1 &&  col == m-1){
+            return dp[row][col] = cost[row][col];
+        }
+        if(dp[row][col] != -1){
+            return dp[row][col];
+        }
+        int ans = 0,v = Integer.MAX_VALUE,h = Integer.MAX_VALUE;
+        if(row+1 < n){
+            v = memo(row+1,col,n,m,cost,dp);
+        }
+        if(col+1 < m){
+            h = memo(row,col+1,n,m,cost,dp);
+        }
+        ans = Math.min(v,h);
+        return dp[row][col] = cost[row][col] + ans;
+    } 
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+        int[][] cost = new int[n][m];
+        for(int i=0;i<cost.length;i++){
+            for(int j=0;j<cost[i].length;j++){
+                cost[i][j] = scn.nextInt();
+            }
+        }
+        // int[][] dp = new int[n][m];
+        // for(int i=0;i<dp.length;i++){
+        //     Arrays.fill(dp[i],Integer.MAX_VALUE);
+        // }
+        
+        // int minimumCost = minCostInMazeByMemo(0,0,cost,n-1,m-1,dp);
+        // System.out.println(minimumCost);
+        // System.out.println(rec(0,0,n,m,cost));
+        int[][] dp = new int[n][m];
+        for(int i=0;i<dp.length;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        System.out.println(memo(0,0,n,m,cost,dp));
+    }
+
+}
+
+
+
+
+
+Appraoch 3
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    // public static int minCostInMaze(int row,int col,int[][] cost,int maxRow,int MaxCol){
+    //     if(row == maxRow && col == MaxCol){
+    //         return cost[row][col];
+    //     }
+    //     int minCost = Integer.MAX_VALUE;
+    //     if(col + 1 <= MaxCol){
+    //         minCost = Math.min(minCost,minCostInMaze(row,col+1,cost,maxRow,MaxCol));
+    //     }
+    //     if(row + 1 <= maxRow){
+    //         minCost = Math.min(minCost,minCostInMaze(row+1,col,cost,maxRow,MaxCol));
+    //     }
+        
+    //     return minCost + cost[row][col];
+    // }
+    public static int minCostInMazeByMemo(int row,int col,int[][] cost,int maxRow,int MaxCol,int[][] dp){
+        if(row == maxRow && col == MaxCol){
+            return dp[row][col] = cost[row][col];
+        }
+        if(dp[row][col] != Integer.MAX_VALUE){
+            return dp[row][col];
+        }
+        int minCost = Integer.MAX_VALUE;
+        if(col + 1 <= MaxCol){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row,col+1,cost,maxRow,MaxCol,dp));
+        }
+        if(row + 1 <= maxRow){
+            minCost = Math.min(minCost,minCostInMazeByMemo(row+1,col,cost,maxRow,MaxCol,dp));
+        }
+        
+        return dp[row][col] = minCost + cost[row][col];
+    }
+    public static int rec(int row,int col ,int n,int m,int[][] cost){
+        if(row == n-1 &&  col == m-1){
+            return cost[row][col];
+        }
+        int ans = 0,v = Integer.MAX_VALUE,h = Integer.MAX_VALUE;
+        if(row+1 < n){
+            v = rec(row+1,col,n,m,cost);
+        }
+        if(col+1 < m){
+            h = rec(row,col+1,n,m,cost);
+        }
+        ans += Math.min(v,h);
+        return cost[row][col] + ans;
+    } 
+    public static int memo(int row,int col ,int n,int m,int[][] cost,int[][] dp){
+        if(row == n-1 &&  col == m-1){
+            return dp[row][col] = cost[row][col];
+        }
+        if(dp[row][col] != -1){
+            return dp[row][col];
+        }
+        int ans = 0,v = Integer.MAX_VALUE,h = Integer.MAX_VALUE;
+        if(row+1 < n){
+            v = memo(row+1,col,n,m,cost,dp);
+        }
+        if(col+1 < m){
+            h = memo(row,col+1,n,m,cost,dp);
+        }
+        ans = Math.min(v,h);
+        return dp[row][col] = cost[row][col] + ans;
+    } 
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+        int[][] cost = new int[n][m];
+        for(int i=0;i<cost.length;i++){
+            for(int j=0;j<cost[i].length;j++){
+                cost[i][j] = scn.nextInt();
+            }
+        }
+        // int[][] dp = new int[n][m];
+        // for(int i=0;i<dp.length;i++){
+        //     Arrays.fill(dp[i],Integer.MAX_VALUE);
+        // }
+        
+        // int minimumCost = minCostInMazeByMemo(0,0,cost,n-1,m-1,dp);
+        // System.out.println(minimumCost);
+        // System.out.println(rec(0,0,n,m,cost));
+        int[][] dp = new int[n][m];
+        for(int i=0;i<dp.length;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        // System.out.println(memo(0,0,n,m,cost,dp));
+        for(int row = n-1;row>=0;row--){
+            for(int col = m-1;col>=0;col--){
+                if(row == n-1 &&  col == m-1){
+                    dp[row][col] = cost[row][col];
+                    continue;
+                }
+                int ans = 0,v = Integer.MAX_VALUE,h = Integer.MAX_VALUE;
+                if(row+1 < n){
+                    v = dp[row+1][col];
+                }
+                if(col+1 < m){
+                    h = dp[row][col+1];
+                }
+                ans = Math.min(v,h);
+                dp[row][col] = cost[row][col] + ans;
+            }
+        }
+        System.out.println(dp[0][0]);
+    }
+
+}

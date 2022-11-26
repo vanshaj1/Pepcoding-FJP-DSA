@@ -1,0 +1,242 @@
+Maximum Sum Non Adjacent Elements
+Easy
+
+1. You are given a number n, representing the count of elements.
+2. You are given n numbers, representing n elements.
+3. You are required to find the maximum sum of a subsequence with no adjacent elements.
+
+Constraints
+1 = n = 1000
+-1000 = n1, n2, .. n elements = 1000
+
+Format
+Input
+A number n
+n1
+n2
+.. n number of elements
+
+Output
+A number representing the maximum sum of a subsequence with no adjacent elements.
+
+Example
+Sample Input
+
+6
+5
+10
+10
+100
+5
+6
+
+Sample Output
+116
+
+
+
+
+```````````````````````````````Code`````````````````````````````````
+
+Approach 1
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int idx , int[] arr){
+        if(idx >= arr.length){
+            return 0;
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+
+        exc = rec(idx + 1 , arr);
+        return Math.max(inc,exc);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){   
+            arr[i] = scn.nextInt();
+        }
+        System.out.println(rec(0,arr));
+    }
+}
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int idx , int[] arr){
+        if(idx >= arr.length){
+            return 0;
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+
+        exc = rec(idx + 1 , arr);
+        return Math.max(inc,exc);
+    }
+    public static int memo(int idx , int[] arr,int[] dp){
+        if(idx >= arr.length){
+            return dp[idx] = 0;
+        }
+        if(dp[idx] != 0){
+            return dp[idx];
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+
+        exc = rec(idx + 1 , arr);
+        return dp[idx] = Math.max(inc,exc);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){   
+            arr[i] = scn.nextInt();
+        }
+        // System.out.println(rec(0,arr));
+        int[] dp = new int[arr.length+1];
+        System.out.println(memo(0,arr,dp));
+    }
+}
+
+
+
+
+Approach 3
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int idx , int[] arr){
+        if(idx == arr.length || idx == arr.length + 1){
+            return 0;
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+        exc = rec(idx + 1 , arr);
+        return Math.max(inc,exc);
+    }
+    public static int memo(int idx , int[] arr,int[] dp){
+        if(idx == arr.length || idx == arr.length + 1){
+            return dp[idx] = 0;
+        }
+        if(dp[idx] != 0){
+            return dp[idx];
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+
+        exc = rec(idx + 1 , arr);
+        return dp[idx] = Math.max(inc,exc);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){   
+            arr[i] = scn.nextInt();
+        }
+        // System.out.println(rec(0,arr));
+        // System.out.println(memo(0,arr,dp));
+        int[] dp = new int[arr.length+2];
+        for(int idx=n+1;idx>=0;idx--){
+            if(idx == arr.length || idx == arr.length + 1){
+                dp[idx] = 0;
+                continue;
+            }
+            int inc = 0,exc = 0;
+            inc = arr[idx] +  dp[idx + 2];
+
+            exc = dp[idx + 1];
+            dp[idx] = Math.max(inc,exc);
+
+        }
+        System.out.println(dp[0]);
+    }
+}
+
+
+
+
+Appraoch 4
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int idx , int[] arr){
+        if(idx == arr.length || idx == arr.length + 1){
+            return 0;
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+        exc = rec(idx + 1 , arr);
+        return Math.max(inc,exc);
+    }
+    public static int memo(int idx , int[] arr,int[] dp){
+        if(idx == arr.length || idx == arr.length + 1){
+            return dp[idx] = 0;
+        }
+        if(dp[idx] != 0){
+            return dp[idx];
+        }
+        int inc = 0,exc = 0;
+        inc = arr[idx] +  rec(idx + 2 , arr);
+
+        exc = rec(idx + 1 , arr);
+        return dp[idx] = Math.max(inc,exc);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){   
+            arr[i] = scn.nextInt();
+        }
+        // System.out.println(rec(0,arr));
+        // System.out.println(memo(0,arr,dp));
+        // int[] dp = new int[arr.length+2];
+        // for(int idx=n+1;idx>=0;idx--){
+        //     if(idx == arr.length || idx == arr.length + 1){
+        //         dp[idx] = 0;
+        //         continue;
+        //     }
+        //     int inc = 0,exc = 0;
+        //     inc = arr[idx] +  dp[idx + 2];
+
+        //     exc = dp[idx + 1];
+        //     dp[idx] = Math.max(inc,exc);
+
+        // }
+        int prev1 = 0,prev2 = 0;
+         for(int idx=n-1;idx>=0;idx--){
+            int inc = 0,exc = 0;
+            inc = arr[idx] +  prev2;
+
+            exc = prev1;
+            prev2 = prev1;
+            prev1 = Math.max(inc,exc);
+
+        }
+        System.out.println(prev1);
+    }
+}

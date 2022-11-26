@@ -1,0 +1,545 @@
+Coin Change Permutations
+Medium
+
+1. You are given a number n, representing the count of coins.
+2. You are given n numbers, representing the denominations of n coins.
+3. You are given a number amt.
+4. You are required to calculate and print the number of permutations of the n coins using which the 
+     amount amt can be paid.
+
+Note1 - You have an infinite supply of each coin denomination i.e. same coin denomination can be 
+                  used for many installments in payment of amt
+Note2 - You are required to find the count of permutations and not combinations i.e.
+                  2 + 2 + 3 = 7 and 2 + 3 + 2 = 7 and 3 + 2 + 2 = 7 are different permutations of same 
+                  combination. You should treat them as 3 and not 1.
+
+Constraints
+1 = n = 20
+0 = n1, n2, .. n elements = 20
+0 = amt = 30
+
+Format
+Input
+A number n
+n1
+n2
+.. n number of elements
+A number amt
+
+Output
+A number representing the count of combinations of coins which can be used to pay the amount amt
+
+Example
+Sample Input
+
+4
+2
+3
+5
+6
+7
+
+Sample Output
+5
+
+
+
+
+````````````````````````````````Code````````````````````````````````
+
+
+Appraoch 1
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+     public static int findNoOfPermutationWithRecurr(int n,int[] coins,int target){
+            if(target == 0){
+                return 1;
+            }
+            int ans = 0;
+            for(int coin : coins){
+                if(coin <= target)
+                    ans += findNoOfPermutationWithRecurr(n,coins,target - coin);
+            }
+        
+
+        return ans;
+    }
+    public static int findNoOfPermutationWithMemo(int n,int[] coins,int target,int[] dp){
+            if(target == 0){
+                return 1;
+            }
+            if(dp[target] != 0){
+                return dp[target];
+            }
+            int ans = 0;
+            for(int coin : coins){
+                if(coin <= target)
+                    ans += findNoOfPermutationWithMemo(n,coins,target - coin,dp);
+            }
+        
+
+        return dp[target] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // System.out.println(findNoOfPermutationWithRecurr(n,coins,amount));
+        int[] dp = new int[amount+1];
+        // System.out.println(findNoOfPermutationWithMemo(n,coins,amount,dp));
+        for(int target = 0;target <= amount;target++){
+                 if(target == 0){
+                      dp[target] = 1;
+                      continue;
+                    }
+                    int ans = 0;
+                    for(int coin : coins){
+                        if(coin <= target)
+                            ans += dp[target - coin];
+                    }
+                
+
+                dp[target] = ans;
+        }
+        System.out.println(dp[amount]);
+    }
+}
+
+
+
+
+
+
+Appraoch 2
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    //  public static int findNoOfPermutationWithRecurr(int n,int[] coins,int target){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithRecurr(n,coins,target - coin);
+    //         }
+        
+
+    //     return ans;
+    // }
+    // public static int findNoOfPermutationWithMemo(int n,int[] coins,int target,int[] dp){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         if(dp[target] != 0){
+    //             return dp[target];
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithMemo(n,coins,target - coin,dp);
+    //         }
+        
+
+    //     return dp[target] = ans;
+    // }
+    public static int rec(int amount,int[] coins){
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += rec(amount - coins[i],coins);
+            }
+        }
+        return ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // // System.out.println(findNoOfPermutationWithRecurr(n,coins,amount));
+        // int[] dp = new int[amount+1];
+        // // System.out.println(findNoOfPermutationWithMemo(n,coins,amount,dp));
+        // for(int target = 0;target <= amount;target++){
+        //          if(target == 0){
+        //               dp[target] = 1;
+        //               continue;
+        //             }
+        //             int ans = 0;
+        //             for(int coin : coins){
+        //                 if(coin <= target)
+        //                     ans += dp[target - coin];
+        //             }
+                
+
+        //         dp[target] = ans;
+        // }
+        // System.out.println(dp[amount]);
+        System.out.println(rec(amount,coins));
+    }
+}
+
+
+
+
+
+Appraoch 3
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    //  public static int findNoOfPermutationWithRecurr(int n,int[] coins,int target){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithRecurr(n,coins,target - coin);
+    //         }
+        
+
+    //     return ans;
+    // }
+    // public static int findNoOfPermutationWithMemo(int n,int[] coins,int target,int[] dp){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         if(dp[target] != 0){
+    //             return dp[target];
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithMemo(n,coins,target - coin,dp);
+    //         }
+        
+
+    //     return dp[target] = ans;
+    // }
+    public static int rec(int amount,int[] coins){
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += rec(amount - coins[i],coins);
+            }
+        }
+        return ans;
+    }
+    public static int memo(int amount,int[] coins,int[] dp){
+        if(amount == 0){
+            return dp[amount] = 1;
+        }
+        if(dp[amount] != -1){
+            return dp[amount];
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += memo(amount - coins[i],coins,dp);
+            }
+        }
+        return dp[amount] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // // System.out.println(findNoOfPermutationWithRecurr(n,coins,amount));
+        // int[] dp = new int[amount+1];
+        // // System.out.println(findNoOfPermutationWithMemo(n,coins,amount,dp));
+        // for(int target = 0;target <= amount;target++){
+        //          if(target == 0){
+        //               dp[target] = 1;
+        //               continue;
+        //             }
+        //             int ans = 0;
+        //             for(int coin : coins){
+        //                 if(coin <= target)
+        //                     ans += dp[target - coin];
+        //             }
+                
+
+        //         dp[target] = ans;
+        // }
+        // System.out.println(dp[amount]);
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp,-1);
+        System.out.println(memo(amount,coins,dp));
+    }
+}
+
+
+
+
+
+
+
+Appraoch 4
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    //  public static int findNoOfPermutationWithRecurr(int n,int[] coins,int target){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithRecurr(n,coins,target - coin);
+    //         }
+        
+
+    //     return ans;
+    // }
+    // public static int findNoOfPermutationWithMemo(int n,int[] coins,int target,int[] dp){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         if(dp[target] != 0){
+    //             return dp[target];
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithMemo(n,coins,target - coin,dp);
+    //         }
+        
+
+    //     return dp[target] = ans;
+    // }
+    public static int rec(int amount,int[] coins){
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += rec(amount - coins[i],coins);
+            }
+        }
+        return ans;
+    }
+    public static int memo(int amount,int[] coins,int[] dp){
+        if(amount == 0){
+            return dp[amount] = 1;
+        }
+        if(dp[amount] != -1){
+            return dp[amount];
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += memo(amount - coins[i],coins,dp);
+            }
+        }
+        return dp[amount] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // // System.out.println(findNoOfPermutationWithRecurr(n,coins,amount));
+        // int[] dp = new int[amount+1];
+        // // System.out.println(findNoOfPermutationWithMemo(n,coins,amount,dp));
+        // for(int target = 0;target <= amount;target++){
+        //          if(target == 0){
+        //               dp[target] = 1;
+        //               continue;
+        //             }
+        //             int ans = 0;
+        //             for(int coin : coins){
+        //                 if(coin <= target)
+        //                     ans += dp[target - coin];
+        //             }
+                
+
+        //         dp[target] = ans;
+        // }
+        // System.out.println(dp[amount]);
+        int[] dp = new int[amount+1];
+        // Arrays.fill(dp,-1);
+        // System.out.println(memo(amount,coins,dp));
+        for(int i=0;i<=amount;i++){
+            if(i == 0){
+                dp[i] = 1;
+                continue;
+            }
+            int ans = 0;
+            for(int j=0;j<coins.length;j++){
+                if(coins[j] <= i){
+                    ans += dp[i - coins[j]];
+                }
+            }
+            dp[i] = ans;
+        }
+        System.out.println(dp[amount]);
+    }
+}
+
+
+
+
+
+
+Approach 5   Sumit sir
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    //  public static int findNoOfPermutationWithRecurr(int n,int[] coins,int target){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithRecurr(n,coins,target - coin);
+    //         }
+        
+
+    //     return ans;
+    // }
+    // public static int findNoOfPermutationWithMemo(int n,int[] coins,int target,int[] dp){
+    //         if(target == 0){
+    //             return 1;
+    //         }
+    //         if(dp[target] != 0){
+    //             return dp[target];
+    //         }
+    //         int ans = 0;
+    //         for(int coin : coins){
+    //             if(coin <= target)
+    //                 ans += findNoOfPermutationWithMemo(n,coins,target - coin,dp);
+    //         }
+        
+
+    //     return dp[target] = ans;
+    // }
+    public static int rec(int amount,int[] coins){
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += rec(amount - coins[i],coins);
+            }
+        }
+        return ans;
+    }
+    public static int memo(int amount,int[] coins,int[] dp){
+        if(amount == 0){
+            return dp[amount] = 1;
+        }
+        if(dp[amount] != -1){
+            return dp[amount];
+        }
+        int ans = 0;
+        for(int i=0;i<coins.length;i++){
+            if(coins[i] <= amount){
+                ans += memo(amount - coins[i],coins,dp);
+            }
+        }
+        return dp[amount] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // // System.out.println(findNoOfPermutationWithRecurr(n,coins,amount));
+        // int[] dp = new int[amount+1];
+        // // System.out.println(findNoOfPermutationWithMemo(n,coins,amount,dp));
+        // for(int target = 0;target <= amount;target++){
+        //          if(target == 0){
+        //               dp[target] = 1;
+        //               continue;
+        //             }
+        //             int ans = 0;
+        //             for(int coin : coins){
+        //                 if(coin <= target)
+        //                     ans += dp[target - coin];
+        //             }
+                
+
+        //         dp[target] = ans;
+        // }
+        // System.out.println(dp[amount]);
+        int[] dp = new int[amount+1];
+        // Arrays.fill(dp,-1);
+        // System.out.println(memo(amount,coins,dp));
+        for(int i=0;i<=amount;i++){
+            if(i == 0){
+                dp[i] = 1;
+                continue;
+            }
+            int ans = 0;
+            for(int j=0;j<coins.length;j++){
+                if(coins[j] <= i){
+                    ans += dp[i - coins[j]];
+                }
+            }
+            dp[i] = ans;
+        }
+        System.out.println(dp[amount]);
+
+
+            // Summet Sir Tabulation Approach same as above only
+            // public int coinChange(int[] coins, int amount) {
+            //     int[] dp = new int[amount + 1];
+            //     dp[0] = 1;
+            //     for(int i=0;i<=amount;i++){
+            //         for(int coin:coins){
+            //             if(i >= coin){
+            //                 dp[i] += dp[i - coin];
+            //             }
+            //         }
+            //     }
+            //     return dp[amount];
+                
+            // }
+    
+    }
+}
+
+
+

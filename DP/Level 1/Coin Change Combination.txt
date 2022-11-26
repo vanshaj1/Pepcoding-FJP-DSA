@@ -1,0 +1,489 @@
+Coin Change Combination
+Easy
+
+1. You are given a number n, representing the count of coins.
+2. You are given n numbers, representing the denominations of n coins.
+3. You are given a number amt.
+4. You are required to calculate and print the number of combinations of the n coins using which the 
+     amount amt can be paid.
+
+Note1 - You have an infinite supply of each coin denomination i.e. same coin denomination can be 
+                  used for many installments in payment of amt
+Note2 - You are required to find the count of combinations and not permutations i.e.
+                  2 + 2 + 3 = 7 and 2 + 3 + 2 = 7 and 3 + 2 + 2 = 7 are different permutations of same 
+                  combination. You should treat them as 1 and not 3.
+
+Constraints
+1 = n = 30
+0 = n1, n2, .. n elements = 20
+0 = amt = 50
+
+Format
+Input
+A number n
+n1
+n2
+.. n number of elements
+A number amt
+
+Output
+A number representing the count of combinations of coins which can be used to pay the amount amt
+
+Example
+Sample Input
+
+4
+2
+3
+5
+6
+7
+
+Sample Output
+2
+
+
+
+
+
+`````````````````````````````````Code```````````````````````````````
+
+Appraoch 1
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static int findNoOfCombination(int n,int[] coins,int target,int idx,int[][] dp){
+        if(idx == n){
+            if(target == 0){
+                return dp[idx][target] = 1;
+            }else{
+                return 0;
+            }
+        }
+        if(dp[idx][target] != 0){
+            return dp[idx][target];
+        }
+        int ans = 0;
+        if(target >= coins[idx]){
+           ans += findNoOfCombination(n,coins,target - coins[idx],idx,dp);
+        }
+        ans += findNoOfCombination(n,coins,target,idx+1,dp);
+
+        return dp[idx][target] = ans;
+    }
+    public static int findNoOfCombinationWithRecurr(int n,int[] coins,int target,int idx){
+        if(idx == n){
+            if(target == 0){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+        int ans = 0;
+        if(target >= coins[idx]){
+           ans += findNoOfCombinationWithRecurr(n,coins,target - coins[idx],idx);
+        }
+        ans += findNoOfCombinationWithRecurr(n,coins,target,idx+1);
+
+        return ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        int[][] dp = new int[n+1][amount+1];
+        // System.out.println(findNoOfCombination(coins.length,coins,target,0,dp));
+        for(int idx=n;idx>=0;idx--){
+             for(int target = 0;target <= amount;target++){
+                 if(idx == n){
+                    if(target == 0){
+                        dp[idx][target] = 1;
+                        continue;
+                    }else{
+                        continue;
+                    }
+                }
+                int ans = 0;
+                if(target >= coins[idx]){
+                ans += dp[idx][target - coins[idx]];
+                }
+                ans += dp[idx+1][target];
+
+                dp[idx][target] = ans;
+             }
+
+        }
+        System.out.println(dp[0][amount]);
+
+    }
+}
+
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    // public static int findNoOfCombination(int n,int[] coins,int target,int idx,int[][] dp){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return dp[idx][target] = 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     if(dp[idx][target] != 0){
+    //         return dp[idx][target];
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombination(n,coins,target - coins[idx],idx,dp);
+    //     }
+    //     ans += findNoOfCombination(n,coins,target,idx+1,dp);
+
+    //     return dp[idx][target] = ans;
+    // }
+    // public static int findNoOfCombinationWithRecurr(int n,int[] coins,int target,int idx){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombinationWithRecurr(n,coins,target - coins[idx],idx);
+    //     }
+    //     ans += findNoOfCombinationWithRecurr(n,coins,target,idx+1);
+
+    //     return ans;
+    // }
+    public static int rec(int idx,int amount,int[] coins){
+        if(idx >= coins.length){
+            return 0;
+        }
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        if(amount >= coins[idx]){
+            ans += rec(idx,amount - coins[idx],coins);
+        }
+        ans += rec(idx+1,amount,coins);
+        return ans;
+
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // int[][] dp = new int[n+1][amount+1];
+        // // System.out.println(findNoOfCombination(coins.length,coins,target,0,dp));
+        // for(int idx=n;idx>=0;idx--){
+        //      for(int target = 0;target <= amount;target++){
+        //          if(idx == n){
+        //             if(target == 0){
+        //                 dp[idx][target] = 1;
+        //                 continue;
+        //             }else{
+        //                 continue;
+        //             }
+        //         }
+        //         int ans = 0;
+        //         if(target >= coins[idx]){
+        //         ans += dp[idx][target - coins[idx]];
+        //         }
+        //         ans += dp[idx+1][target];
+
+        //         dp[idx][target] = ans;
+        //      }
+
+        // }
+        // System.out.println(dp[0][amount]);
+        System.out.println(rec(0,amount,coins));
+
+    }
+}
+
+
+
+
+Appraoch 3
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    // public static int findNoOfCombination(int n,int[] coins,int target,int idx,int[][] dp){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return dp[idx][target] = 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     if(dp[idx][target] != 0){
+    //         return dp[idx][target];
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombination(n,coins,target - coins[idx],idx,dp);
+    //     }
+    //     ans += findNoOfCombination(n,coins,target,idx+1,dp);
+
+    //     return dp[idx][target] = ans;
+    // }
+    // public static int findNoOfCombinationWithRecurr(int n,int[] coins,int target,int idx){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombinationWithRecurr(n,coins,target - coins[idx],idx);
+    //     }
+    //     ans += findNoOfCombinationWithRecurr(n,coins,target,idx+1);
+
+    //     return ans;
+    // }
+    public static int rec(int idx,int amount,int[] coins){
+        if(idx >= coins.length){
+            return 0;
+        }
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        if(amount >= coins[idx]){
+            ans += rec(idx,amount - coins[idx],coins);
+        }
+        ans += rec(idx+1,amount,coins);
+        return ans;
+
+    }
+    public static int memo(int idx,int amount,int[] coins,int[][] dp){
+        if(idx >= coins.length){
+            return dp[idx][amount] = 0;
+        }
+        if(amount == 0){
+            return dp[idx][amount] = 1;
+        }
+        if(dp[idx][amount] != -1){
+            return dp[idx][amount];
+        }
+        int ans = 0;
+        if(amount >= coins[idx]){
+            ans += memo(idx,amount - coins[idx],coins,dp);
+        }
+        ans += memo(idx+1,amount,coins,dp);
+        return dp[idx][amount] = ans;
+
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // int[][] dp = new int[n+1][amount+1];
+        // // System.out.println(findNoOfCombination(coins.length,coins,target,0,dp));
+        // for(int idx=n;idx>=0;idx--){
+        //      for(int target = 0;target <= amount;target++){
+        //          if(idx == n){
+        //             if(target == 0){
+        //                 dp[idx][target] = 1;
+        //                 continue;
+        //             }else{
+        //                 continue;
+        //             }
+        //         }
+        //         int ans = 0;
+        //         if(target >= coins[idx]){
+        //         ans += dp[idx][target - coins[idx]];
+        //         }
+        //         ans += dp[idx+1][target];
+
+        //         dp[idx][target] = ans;
+        //      }
+
+        // }
+        // System.out.println(dp[0][amount]);
+        // System.out.println(rec(0,amount,coins));
+        int[][] dp = new int[n+1][amount+1];
+        for(int i=0;i<dp.length;i++ ){
+            Arrays.fill(dp[i],-1);
+        }
+        System.out.println(memo(0,amount,coins,dp));
+    }
+}
+
+
+
+
+Appraoch 4
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    // public static int findNoOfCombination(int n,int[] coins,int target,int idx,int[][] dp){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return dp[idx][target] = 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     if(dp[idx][target] != 0){
+    //         return dp[idx][target];
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombination(n,coins,target - coins[idx],idx,dp);
+    //     }
+    //     ans += findNoOfCombination(n,coins,target,idx+1,dp);
+
+    //     return dp[idx][target] = ans;
+    // }
+    // public static int findNoOfCombinationWithRecurr(int n,int[] coins,int target,int idx){
+    //     if(idx == n){
+    //         if(target == 0){
+    //             return 1;
+    //         }else{
+    //             return 0;
+    //         }
+    //     }
+    //     int ans = 0;
+    //     if(target >= coins[idx]){
+    //        ans += findNoOfCombinationWithRecurr(n,coins,target - coins[idx],idx);
+    //     }
+    //     ans += findNoOfCombinationWithRecurr(n,coins,target,idx+1);
+
+    //     return ans;
+    // }
+    public static int rec(int idx,int amount,int[] coins){
+        if(idx >= coins.length){
+            return 0;
+        }
+        if(amount == 0){
+            return 1;
+        }
+        int ans = 0;
+        if(amount >= coins[idx]){
+            ans += rec(idx,amount - coins[idx],coins);
+        }
+        ans += rec(idx+1,amount,coins);
+        return ans;
+
+    }
+    public static int memo(int idx,int amount,int[] coins,int[][] dp){
+        if(idx >= coins.length){
+            return dp[idx][amount] = 0;
+        }
+        if(amount == 0){
+            return dp[idx][amount] = 1;
+        }
+        if(dp[idx][amount] != -1){
+            return dp[idx][amount];
+        }
+        int ans = 0;
+        if(amount >= coins[idx]){
+            ans += memo(idx,amount - coins[idx],coins,dp);
+        }
+        ans += memo(idx+1,amount,coins,dp);
+        return dp[idx][amount] = ans;
+
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for(int i=0;i<coins.length;i++){
+            coins[i] = scn.nextInt();
+        }
+        int amount = scn.nextInt();
+        // int[][] dp = new int[n+1][amount+1];
+        // // System.out.println(findNoOfCombination(coins.length,coins,target,0,dp));
+        // for(int idx=n;idx>=0;idx--){
+        //      for(int target = 0;target <= amount;target++){
+        //          if(idx == n){
+        //             if(target == 0){
+        //                 dp[idx][target] = 1;
+        //                 continue;
+        //             }else{
+        //                 continue;
+        //             }
+        //         }
+        //         int ans = 0;
+        //         if(target >= coins[idx]){
+        //         ans += dp[idx][target - coins[idx]];
+        //         }
+        //         ans += dp[idx+1][target];
+
+        //         dp[idx][target] = ans;
+        //      }
+
+        // }
+        // System.out.println(dp[0][amount]);
+        // System.out.println(rec(0,amount,coins));
+        int[][] dp = new int[n+1][amount+1];
+        // for(int i=0;i<dp.length;i++ ){
+        //     Arrays.fill(dp[i],-1);
+        // }
+        // System.out.println(memo(0,amount,coins,dp));
+        for(int idx=coins.length;idx>=0;idx--){
+            for(int target = 0;target<=amount;target++){
+                if(idx >= coins.length){
+                    dp[idx][target] = 0;
+                    continue;
+                }
+                if(target == 0){
+                    dp[idx][target] = 1;
+                    continue;
+                }
+                int ans = 0;
+                if(target >= coins[idx]){
+                    ans += dp[idx][target - coins[idx]];
+                }
+                ans += dp[idx+1][target];
+                dp[idx][target] = ans;
+            }
+            
+        }
+        System.out.println(dp[0][amount]);
+    }
+}
+
+
+
+

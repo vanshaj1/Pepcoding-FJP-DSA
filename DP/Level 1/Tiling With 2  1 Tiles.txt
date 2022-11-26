@@ -1,0 +1,150 @@
+Tiling With 2 * 1 Tiles
+Easy
+
+1. You are given a number n representing the length of a floor space which is 2m wide. It's a 2  n board.
+2. You've an infinite supply of 2  1 tiles.
+3. You are required to calculate and print the number of ways floor can be tiled using tiles.
+
+Constraints
+1 = n = 100
+
+Format
+Input
+A number n
+
+Output
+A number representing the number of ways in which the number of ways floor can be tiled using tiles.
+
+Example
+Sample Input
+
+8
+
+Sample Output
+34
+
+
+
+
+
+
+`````````````````````````````Code```````````````````````````````````
+
+
+
+Approach 1
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int n){
+        if(n == 0){
+            return 1;
+        }
+        int ht = 0,vt = 0; 
+        if(n-2 >=0){
+           ht = 1 * rec(n-2);
+        }
+        vt =1 * rec(n-1);
+        return  ht + vt;
+    }
+    public static int memo(int n,int[] dp){
+        if(n == 0){
+            return dp[n] = 1;
+        }
+        if(dp[n] != 0){
+            return dp[n];
+        }
+        int ht = 0,vt = 0; 
+        if(n-2 >=0){
+           ht = 1 * rec(n-2);
+        }
+        vt = 1 * rec(n-1);
+        return  dp[n] = ht + vt;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        // System.out.println(rec(n));
+        int[] dp = new int[n+1];   
+        // System.out.println(memo(n,dp)); 
+        for(int i=0;i<=n;i++){
+            if(i == 0){
+                dp[i] = 1;
+                continue;
+            }
+            int ht = 0,vt = 0; 
+            if(i-2 >=0){
+            ht = 1 * dp[i-2];
+            }
+            vt = 1 * dp[i-1];
+            dp[i] = ht + vt;
+        }
+        System.out.println(dp[n]);
+
+    }
+}
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int rec(int n){
+        if(n == 0){
+            return 1;
+        }
+        int ht = 0,vt = 0; 
+        if(n-2 >=0){
+           ht = 1 * rec(n-2);
+        }
+        vt =1 * rec(n-1);
+        return  ht + vt;
+    }
+    public static int memo(int n,int[] dp){
+        if(n == 0){
+            return dp[n] = 1;
+        }
+        if(dp[n] != 0){
+            return dp[n];
+        }
+        int ht = 0,vt = 0; 
+        if(n-2 >=0){
+           ht = 1 * rec(n-2);
+        }
+        vt = 1 * rec(n-1);
+        return  dp[n] = ht + vt;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        // System.out.println(rec(n));
+        int[] dp = new int[n+1];   
+        // System.out.println(memo(n,dp)); 
+        // for(int i=0;i<=n;i++){
+        //     if(i == 0){
+        //         dp[i] = 1;
+        //         continue;
+        //     }
+        //     int ht = 0,vt = 0; 
+        //     if(i-2 >=0){
+        //     ht = 1 * dp[i-2];
+        //     }
+        //     vt = 1 * dp[i-1];
+        //     dp[i] = ht + vt;
+        // }
+        // System.out.println(dp[n]);
+        int prev1 = 1,prev2 = 1;
+        for(int i=2;i<=n;i++){
+            int currAns = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = currAns;
+        }
+        System.out.println(prev1);
+
+    }
+}

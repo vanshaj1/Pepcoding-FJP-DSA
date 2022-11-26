@@ -1,0 +1,64 @@
+Highest Frequency Character
+Easy
+
+1. You are given a string str.
+2. You are required to find the character with maximum frequency.
+
+Constraints
+0  str.length() = 100
+There will be a single character with highest frequency
+
+Format
+Input
+A string str
+
+Output
+The character with highest frequency
+
+Example
+Sample Input
+
+zmszeqxllzvheqwrofgcuntypejcxovtaqbnqyqlmrwitc
+
+Sample Output
+q
+
+
+
+
+
+
+```````````````````````````````Code````````````````````````````
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        HashMap<Character,Integer> hmap = new HashMap<>();
+        for(int i=0;i<str.length();i++){
+            int temp = 0;
+            if(hmap.containsKey(str.charAt(i))){
+                int val = hmap.get(str.charAt(i));
+                temp = val+1;
+            }
+            hmap.put(str.charAt(i),temp);
+        }
+        int max = Integer.MIN_VALUE;
+        Character c = 'a';
+        for(Character s:hmap.keySet()){
+            if(max < hmap.get(s)){
+                max = hmap.get(s);
+                c = s;
+            }
+            
+        }
+        System.out.println(c);
+    }
+
+}
+

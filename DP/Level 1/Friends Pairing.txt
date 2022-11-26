@@ -1,0 +1,130 @@
+Friends Pairing
+Easy
+
+1. You are given a number n, representing the number of friends.
+2. Each friend can stay single or pair up with any of it's friends.
+3. You are required to print the number of ways in which these friends can stay single or pair up.
+E.g.
+1 person can stay single or pair up in 1 way.
+2 people can stay singles or pair up in 2 ways. 12 = 1-2, 12.
+3 people (123) can stay singles or pair up in 4 ways. 123 = 1-2-3, 12-3, 13-2, 23-1.
+
+Constraints
+0 = n = 20
+
+Format
+Input
+A number n
+
+Output
+A number representing the number of ways in which n friends can stay single or pair up.
+
+Example
+Sample Input
+
+4
+
+Sample Output
+10
+
+
+
+
+
+```````````````````````````````Code``````````````````````````````````
+
+Approach 1
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int friendsPairing(int n){
+        if(n <= 0){
+            return 1;
+        }
+        int single , pairing;
+        single = friendsPairing(n-1);
+        pairing = (n-1) * friendsPairing(n-2);
+        return single + pairing;
+    }
+    public static int friendsPairingWithMemo(int n , int[] dp){
+        if(n <= 0){
+            return 1;
+        }
+        if(dp[n] != 0){
+            return dp[n];
+        }
+        int single , pairing;
+        single = friendsPairing(n-1);
+        pairing = (n-1) * friendsPairing(n-2);
+        return dp[n] = single + pairing;
+    }
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] dp = new int[n+1];
+        // System.out.println(friendsPairing(n));
+        System.out.println(friendsPairingWithMemo(n,dp));
+
+    }
+
+}
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int friendsPairing(int n){
+        if(n <= 0){
+            return 1;
+        }
+        int single , pairing;
+        single = friendsPairing(n-1);
+        pairing = (n-1) * friendsPairing(n-2);
+        return single + pairing;
+    }
+    public static int friendsPairingWithMemo(int n , int[] dp){
+        if(n <= 0){
+            return 1;
+        }
+        if(dp[n] != 0){
+            return dp[n];
+        }
+        int single , pairing;
+        single = friendsPairing(n-1);
+        pairing = (n-1) * friendsPairing(n-2);
+        return dp[n] = single + pairing;
+    }
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] dp = new int[n+1];
+            // System.out.println(friendsPairing(n));
+            // System.out.println(friendsPairingWithMemo(n,dp));
+            for(int i=0;i<=n;i++){
+                if(i == 0){
+                    dp[i] = 1;
+                    continue;
+                }
+                int single = 0, pairing = 0;
+                single = dp[i-1];
+                if(i-2 >= 0 ){
+                    pairing = (i-1) * dp[i-2];
+                }
+                 dp[i] = single + pairing;
+            }
+            System.out.println(dp[n]);
+
+    }
+
+}

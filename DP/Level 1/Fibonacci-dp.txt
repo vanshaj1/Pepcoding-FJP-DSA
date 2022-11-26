@@ -1,0 +1,219 @@
+Fibonacci-dp
+Easy
+
+1. You are given a number n.
+2. You are required to print the nth element of fibonnaci sequence.
+
+Note - Notice precisely how we have defined the fibonnaci sequence
+0th element - 0
+1st element - 1
+2nd element - 1
+3rd element - 2
+4th element - 3
+5th element - 5
+6th element - 8
+
+Constraints
+0 = n = 45
+
+Format
+Input
+A number n
+
+Output
+A number representing the nth element of fibonnaci sequence
+
+Example
+Sample Input
+
+10
+
+Sample Output
+55
+
+
+
+````````````````````````````````Code```````````````````````````````
+
+Approach 1
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int rec(int n){
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return  1;
+    }
+    return rec(n-1) + rec(n-2);
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    System.out.println(rec(n));
+ }
+
+}
+
+
+
+
+Appraoch 2
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int rec(int n){
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return  1;
+    }
+    return rec(n-1) + rec(n-2);
+}
+public static int memo(int n,int[] dp){
+    if(n == 0){
+        return dp[n] = 0;
+    }
+    if(n == 1){
+        return dp[n] =  1;
+    }
+    if(dp[n] != -1){
+        return dp[n];
+    }
+    return dp[n] = rec(n-1) + rec(n-2);
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    // System.out.println(rec(n));
+    int[] dp = new int[n+1];
+    Arrays.fill(dp,-1);
+    System.out.println(memo(n,dp));
+ }
+
+}
+
+
+
+Approach 3
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int rec(int n){
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return  1;
+    }
+    return rec(n-1) + rec(n-2);
+}
+public static int memo(int n,int[] dp){
+    if(n == 0){
+        return dp[n] = 0;
+    }
+    if(n == 1){
+        return dp[n] =  1;
+    }
+    if(dp[n] != -1){
+        return dp[n];
+    }
+    return dp[n] = rec(n-1) + rec(n-2);
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    // System.out.println(rec(n));
+    int[] dp = new int[n+1];
+    Arrays.fill(dp,-1);
+    // System.out.println(memo(n,dp));
+    for(int i=0;i<=n;i++){
+        if(i == 0){
+             dp[i] = 0;
+             continue;
+        }
+        if(i == 1){
+            dp[i] =  1;
+            continue;
+        }
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    System.out.println(dp[n]);
+ }
+
+}
+
+
+
+
+Approach 4
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int rec(int n){
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return  1;
+    }
+    return rec(n-1) + rec(n-2);
+}
+public static int memo(int n,int[] dp){
+    if(n == 0){
+        return dp[n] = 0;
+    }
+    if(n == 1){
+        return dp[n] =  1;
+    }
+    if(dp[n] != -1){
+        return dp[n];
+    }
+    return dp[n] = rec(n-1) + rec(n-2);
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    // System.out.println(rec(n));
+    int[] dp = new int[n+1];
+    Arrays.fill(dp,-1);
+    // System.out.println(memo(n,dp));
+    // for(int i=0;i<=n;i++){
+    //     if(i == 0){
+    //          dp[i] = 0;
+    //          continue;
+    //     }
+    //     if(i == 1){
+    //         dp[i] =  1;
+    //         continue;
+    //     }
+    //     dp[i] = dp[i-1] + dp[i-2];
+    // }
+    // System.out.println(dp[n]);
+    int prev1 = 1,prev2 = 0;
+    for(int i=2;i<=n;i++){
+        int ans = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = ans;
+    }
+    System.out.println(prev1);
+ }
+
+}

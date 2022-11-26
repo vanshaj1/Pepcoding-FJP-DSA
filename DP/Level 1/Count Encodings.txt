@@ -1,0 +1,276 @@
+Count Encodings
+Easy
+
+1. You are given a string str of digits. (will never start with a 0)
+2. You are required to encode the str as per following rules
+    1 - a
+    2 - b
+    3 - c
+    ..
+    25 - y
+    26 - z
+3. You are required to calculate and print the count of encodings for the string str.
+
+     For 123 - there are 3 encodings. abc, aw, lc
+     For 993 - there is 1 encoding. iic 
+     For 013 - This is an invalid input. A string starting with 0 will not be passed.
+     For 103 - there is 1 encoding. jc
+     For 303 - there are 0 encodings. But such a string maybe passed. In this case 
+     print 0.
+
+Constraints
+0  str.length = 10
+
+Format
+Input
+A string str
+
+Output
+count of encodings
+
+Example
+Sample Input
+
+123
+
+Sample Output
+3
+
+
+
+
+
+
+````````````````````````````````````Code````````````````````````````
+
+
+Approach 1
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main { 
+  
+    public static int printEncodings(int idx,int n,String str){
+            if(idx == n){
+                return 1;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        System.out.println(printEncodings(0,str.length(),str));
+    }
+}
+
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main { 
+  
+    public static int printEncodings(int idx,int n,String str){
+            if(idx == n){
+                return 1;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return ans;
+    }
+    public static int printEncodingsWithMemo(int idx,int n,String str,int[] dp){
+            if(idx == n){
+                dp[idx] = 1;
+                return 1;
+            }
+            if(dp[idx] != 0){
+                return dp[idx];
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return dp[idx] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        // System.out.println(printEncodings(0,str.length(),str));
+        int[] dp = new int[str.length()+1];
+       System.out.println(printEncodingsWithMemo(0,str.length(),str,dp));
+    }   
+}
+
+
+
+
+
+
+Approach 3
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main { 
+  
+    public static int printEncodings(int idx,int n,String str){
+            if(idx == n){
+                return 1;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return ans;
+    }
+    public static int printEncodingsWithMemo(int idx,int n,String str,int[] dp){
+            if(idx == n){
+                dp[idx] = 1;
+                return 1;
+            }
+            if(dp[idx] != 0){
+                return dp[idx];
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return dp[idx] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        // System.out.println(printEncodings(0,str.length(),str));
+        int[] dp = new int[str.length()+1];
+        //    System.out.println(printEncodingsWithMemo(0,str.length(),str,dp));
+        for(int idx=str.length();idx>=0;idx--){
+            if(idx == str.length()){
+                dp[idx] = 1;
+                continue;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += dp[idx+1];
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += dp[idx+2];
+            }
+             dp[idx] = ans; 
+        }
+        System.out.println(dp[0]);
+    }   
+}
+
+
+
+
+
+
+
+Approach 4
+
+import java.io.*;
+import java.util.*;
+
+public class Main { 
+  
+    public static int printEncodings(int idx,int n,String str){
+            if(idx == n){
+                return 1;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return ans;
+    }
+    public static int printEncodingsWithMemo(int idx,int n,String str,int[] dp){
+            if(idx == n){
+                dp[idx] = 1;
+                return 1;
+            }
+            if(dp[idx] != 0){
+                return dp[idx];
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += printEncodings(idx+1,n,str);
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += printEncodings(idx+2,n,str);
+            }
+            return dp[idx] = ans;
+    }
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+        // System.out.println(printEncodings(0,str.length(),str));
+        // int[] dp = new int[str.length()+1];
+        //    System.out.println(printEncodingsWithMemo(0,str.length(),str,dp));
+        // for(int idx=str.length();idx>=0;idx--){
+        //     if(idx == str.length()){
+        //         dp[idx] = 1;
+        //         continue;
+        //     }
+        //     int ans = 0;
+        //     if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+        //         ans += dp[idx+1];
+        //     }
+        //     if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+        //         ans += dp[idx+2];
+        //     }
+        //      dp[idx] = ans; 
+        // }
+        // System.out.println(dp[0]);
+        int nxt = 0,nxtxt = 0;
+        for(int idx=str.length();idx>=0;idx--){
+            if(idx == str.length()){
+                nxt = 1;
+                continue;
+            }
+            int ans = 0;
+            if(str.charAt(idx) >= '1' && str.charAt(idx) <='9'){
+                ans += nxt;
+            }
+            if(idx+1 < str.length() && (str.charAt(idx) == '1' || (str.charAt(idx) == '2' && str.charAt(idx+1) <= '6'))){
+                ans += nxtxt;
+            }
+            nxtxt = nxt;
+            nxt = ans; 
+        }
+        System.out.println(nxt);
+    }   
+}
+

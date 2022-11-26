@@ -1,0 +1,222 @@
+Climb Stairs With Minimum Moves
+Easy
+
+1. You are given a number n, representing the number of stairs in a staircase.
+2. You are on the 0th step and are required to climb to the top.
+3. You are given n numbers, where ith element's value represents - till how far from the step you 
+     could jump to in a single move.  You can of-course fewer number of steps in the move.
+4. You are required to print the number of minimum moves in which you can reach the top of 
+     staircase.
+Note - If there is no path through the staircase print null.
+
+Constraints
+0 = n = 20
+0 = n1, n2, .. = 20
+
+Format
+Input
+A number n
+.. n more elements
+
+Output
+A number representing the number of ways to climb the stairs from 0 to top.
+
+Example
+Sample Input
+
+10
+3
+3
+0
+2
+1
+2
+4
+2
+0
+0
+
+Sample Output
+4
+
+
+
+
+```````````````````````````````Code````````````````````````````````
+
+
+Approach 1
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int climbStairsWithMin(int idx,int n,int[] jumps){
+   if(idx == n){
+       return 0;
+   }
+   int ans = Integer.MAX_VALUE;
+   for(int i=1;i<=jumps[idx];i++){
+    if(idx + i <= n){
+          ans =  Math.min(ans,climbStairsWithMin(idx + i,n,jumps));
+    }
+   }
+   if(ans != Integer.MAX_VALUE){
+       ans += 1;
+   }
+   return ans;
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int[] jumps = new int[n];
+    for(int i=0;i<jumps.length;i++){
+        jumps[i] = scn.nextInt();
+    }
+    int minimumWays = climbStairsWithMin(0,n,jumps);
+    System.out.println(minimumWays);
+ }
+
+}
+
+
+
+
+Approach 2
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int climbStairsWithMin(int idx,int n,int[] jumps){
+   if(idx == n){
+       return 0;
+   }
+   int ans = Integer.MAX_VALUE;
+   for(int i=1;i<=jumps[idx];i++){
+    if(idx + i <= n){
+          ans =  Math.min(ans,climbStairsWithMin(idx + i,n,jumps));
+    }
+   }
+   if(ans != Integer.MAX_VALUE){
+       ans += 1;
+   }
+   return ans;
+}
+public static int climbStairsWithMinByMemo(int idx,int n,int[] jumps,int[] memo){
+   if(idx == n){
+       return memo[idx] = 0;
+   }
+   if(memo[idx] != -1){
+       return memo[idx];
+   }
+   int ans = Integer.MAX_VALUE;
+   for(int i=1;i<=jumps[idx];i++){
+    if(idx + i <= n){
+          ans =  Math.min(ans,climbStairsWithMin(idx + i,n,jumps));
+    }
+   }
+   if(ans != Integer.MAX_VALUE){
+       ans += 1;
+   }
+   return memo[idx] = ans;
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int[] jumps = new int[n];
+    for(int i=0;i<jumps.length;i++){
+        jumps[i] = scn.nextInt();
+    }
+    int[] memo = new int[n+1];
+    Arrays.fill(memo,-1);
+    // int minimumWays = climbStairsWithMin(0,n,jumps);
+    int minimumWays = climbStairsWithMinByMemo(0,n,jumps,memo);
+    System.out.println(minimumWays);
+ }
+
+}
+
+
+
+
+
+Approach 3
+
+
+
+import java.io.*;
+import java.util.*;
+
+public class Main{
+public static int climbStairsWithMin(int idx,int n,int[] jumps){
+   if(idx == n){
+       return 0;
+   }
+   int ans = Integer.MAX_VALUE;
+   for(int i=1;i<=jumps[idx];i++){
+    if(idx + i <= n){
+          ans =  Math.min(ans,climbStairsWithMin(idx + i,n,jumps));
+    }
+   }
+   if(ans != Integer.MAX_VALUE){
+       ans += 1;
+   }
+   return ans;
+}
+public static int climbStairsWithMinByMemo(int idx,int n,int[] jumps,int[] memo){
+   if(idx == n){
+       return memo[idx] = 0;
+   }
+   if(memo[idx] != -1){
+       return memo[idx];
+   }
+   int ans = Integer.MAX_VALUE;
+   for(int i=1;i<=jumps[idx];i++){
+    if(idx + i <= n){
+          ans =  Math.min(ans,climbStairsWithMin(idx + i,n,jumps));
+    }
+   }
+   if(ans != Integer.MAX_VALUE){
+       ans += 1;
+   }
+   return memo[idx] = ans;
+}
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int[] jumps = new int[n];
+    for(int i=0;i<jumps.length;i++){
+        jumps[i] = scn.nextInt();
+    }
+    // int[] memo = new int[n+1];
+    // Arrays.fill(memo,-1);
+    // int minimumWays = climbStairsWithMin(0,n,jumps);
+    // int minimumWays = climbStairsWithMinByMemo(0,n,jumps,memo);
+    int[] dp = new int[n+1];
+    for(int i=n;i>=0;i--){
+        if(i == n){
+           dp[i] = 0;
+           continue;
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int j=1;j<=jumps[i];j++){
+            if(i + j <= n){
+                ans =  Math.min(ans,dp[i + j]);
+            }
+        }
+        if(ans != Integer.MAX_VALUE){
+            ans += 1;
+        }
+        dp[i] = ans;
+    }
+  
+    System.out.println(dp[0]);
+ }
+
+}
